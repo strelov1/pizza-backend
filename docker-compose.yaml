@@ -1,0 +1,47 @@
+version: '3.1'
+
+services:
+    app:
+        image: php:7.3-fpm-alpine
+        depends_on:
+            - mysql
+        volumes:
+            - ./:/srv/app
+        networks:
+            api_networks:
+                ipv4_address: ${DOCKER_HOST_APP}
+
+    mysql:
+        image: mysql:latest
+        environment:
+            MYSQL_USER: ${DB_USER}
+            MYSQL_PASSWORD: ${DB_PASS}
+            MYSQL_ROOT_PASSWORD: ${DB_PASS}
+            MYSQL_DATABASE: ${DB_DATABASE}
+        networks:
+            api_networks:
+                ipv4_address: ${DOCKER_HOST_MYSQL}
+
+    redis:
+        image: redis:latest
+        networks:
+            api_networks:
+                ipv4_address: ${DOCKER_HOST_REDIS}
+
+    nginx:
+        image: nginx:latest
+        depends_on:
+            - app
+        volumes:
+            - ./:/srv/app
+            - ./etc/nginx.conf:/etc/nginx/conf.d/app.conf
+        command: [nginx-debug, '-g', 'daemon off;']
+        networks:
+            api_networks:
+                ipv4_address: ${DOCKER_HOST_NGINX}
+
+networks:
+    api_networks:
+        ipam:
+            config:
+                - subnet: ${DOCKER_SUBNET}
