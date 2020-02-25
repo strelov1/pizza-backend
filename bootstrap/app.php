@@ -80,6 +80,10 @@ $app->singleton(
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
+
+
+$app->configure('database');
+
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes
