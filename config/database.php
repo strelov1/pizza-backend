@@ -38,7 +38,7 @@ return [
             'url' => env('DB_CONNECTION'),
             'host' => env('DB_HOST'),
             'port' => env('DB_PORT', '3306'),
-            'database' => 'pizza',
+            'database' => env('DB_DATABASE'),
             'username' => env('DB_USER'),
             'password' => env('DB_PASS'),
             'charset'   => 'utf8',
