@@ -7,6 +7,9 @@ dry_test:
 	docker-compose exec app php ./vendor/bin/phpunit
 	docker-compose down
 
+init:
+	docker-compose exec app php artisan migrate:fresh --seed
+
 up:
 	docker-compose up -d nginx
 
