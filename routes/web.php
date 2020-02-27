@@ -22,4 +22,16 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
             'uses' => 'CatalogController@index',
         ]
     );
+    $router->post(
+        'cart/add',
+        [
+            'uses' => 'CartController@add',
+        ]
+    );
+    $router->get(
+        'cart/count',
+        [
+            'uses' => 'CartController@count',
+        ]
+    );
 });

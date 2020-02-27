@@ -22,8 +22,9 @@ $app = new Laravel\Lumen\Application(
 );
 
 $app->withFacades();
-
 $app->withEloquent();
+
+$app->register(\Fruitcake\Cors\CorsServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -56,7 +57,9 @@ $app->singleton(
 | route or middleware that'll be assigned to some specific routes.
 |
 */
-
+$app->middleware([
+    \Fruitcake\Cors\HandleCors::class,
+]);
 // $app->middleware([
 //     App\Http\Middleware\ExampleMiddleware::class
 // ]);
@@ -83,6 +86,8 @@ $app->singleton(
 
 
 $app->configure('database');
+$app->configure('cors');
+
 
 /*
 |--------------------------------------------------------------------------
