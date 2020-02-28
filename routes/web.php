@@ -17,21 +17,21 @@ $router->get('/', function () use ($router) {
 
 $router->group(['prefix' => 'api/v1'], function () use ($router) {
     $router->get(
-        'catalog',
-        [
-            'uses' => 'CatalogController@index',
-        ]
+        'catalog', ['uses' => 'CatalogController@index']
     );
+
     $router->post(
-        'cart/add',
-        [
-            'uses' => 'CartController@add',
-        ]
+        'cart/add', ['uses' => 'CartController@add']
+    );
+
+    $router->post(
+        'cart/update', ['uses' => 'CartController@update']
+    );
+
+    $router->get(
+        'cart/count', ['uses' => 'CartController@count']
     );
     $router->get(
-        'cart/count',
-        [
-            'uses' => 'CartController@count',
-        ]
+        'cart/content', ['uses' => 'CartController@content']
     );
 });

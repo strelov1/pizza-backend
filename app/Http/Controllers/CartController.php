@@ -22,15 +22,34 @@ class CartController extends Controller
     public function add(Request $request)
     {
         $productId = (int) $request->post('product_id');
+        $count = (int) $request->post('count');
 
-        $this->cartService->addProduct($productId);
+        $this->cartService->addProduct($productId, $count);
 
         return [
-            'status' => 1,
             'count' => $this->cartService->getCount(),
             'products' => $this->cartService->getProducts(),
             'product_id' => $productId
         ];
+    }
+
+    public function update(Request $request)
+    {
+        $productId = (int) $request->post('product_id');
+        $count = (int) $request->post('count');
+
+        $this->cartService->update($productId, $count);
+
+        return [
+            'count' => $this->cartService->getCount(),
+            'products' => $this->cartService->getProducts(),
+            'product_id' => $productId
+        ];
+    }
+
+    public function content()
+    {
+        return $this->cartService->getProductWithCount();
     }
 
 

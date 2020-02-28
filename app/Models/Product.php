@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Product extends Model
 {
 
+    protected $hidden = ['updated_at', 'created_at'];
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);

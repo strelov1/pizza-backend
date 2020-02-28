@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Product;
 use App\Repositories\CartRepository;
 
 class CartService
@@ -13,9 +14,16 @@ class CartService
         $this->cartRepository = $cartRepository;
     }
 
-    public function addProduct(int $product_id): void
+    public function addProduct(int $product_id, int $count): void
     {
-        $this->cartRepository->save($product_id);
+        $cartItem = ['product_id' => $product_id, 'count' => $count];
+        $this->cartRepository->save($cartItem);
+    }
+
+    public function update(int $product_id, int $count): void
+    {
+        $cartItem = ['product_id' => $product_id, 'count' => $count];
+        $this->cartRepository->update($cartItem);
     }
 
     public function getCount(): int
@@ -26,5 +34,25 @@ class CartService
     public function getProducts()
     {
         return $this->cartRepository->getProducts();
+    }
+    public function getProductWithCount()
+    {
+        $cartProducts = $this->getProducts();
+        $productIdx = collect($cartProducts)->pluck('product_id');
+        $products = Product::find($productIdx);
+
+
+        $result = [];
+        foreach ($products->toArray() as $product) {
+            foreach ($cartProducts as $cartProduct) {
+                if ($product['id'] === $cartProduct['product_id']) {
+                    $result[] = array_merge($product, [
+                        'count' => $cartProduct['count']
+                    ]);
+                }
+            }
+        }
+
+        return $result;
     }
 }
