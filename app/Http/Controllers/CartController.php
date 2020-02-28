@@ -2,26 +2,40 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\CartService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class CartController extends Controller
 {
+    /** @var CartService  */
+    protected $cartService;
+
+    /**
+     * CartController constructor.
+     * @param CartService $cartService
+     */
+    public function __construct(CartService $cartService)
+    {
+        $this->cartService = $cartService;
+    }
+
     public function add(Request $request)
     {
-        $count = Cache::get('count') ?? 0;
-        Cache::increment('count');
+        $productId = (int) $request->post('product_id');
+
+        $this->cartService->addProduct($productId);
+
         return [
             'status' => 1,
-            'count' => $count,
-            'product_id' => $request->post('product_id')
+            'count' => $this->cartService->getCount(),
+            'products' => $this->cartService->getProducts(),
+            'product_id' => $productId
         ];
     }
 
 
-    public function count(Request $request)
+    public function count()
     {
-        $count = Cache::get('count') ?? 0;
-        return ['count' => $count];
+        return ['count' => $this->cartService->getCount()];
     }
 }
