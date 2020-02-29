@@ -14,6 +14,10 @@ class CatalogCollection extends ResourceCollection
                 'id' => $item['id'],
                 'name' => $item->name,
                 'image' => $item->image->src,
+                'price' => [
+                    'usd' => $item->price_usd,
+                    'eur' => $item->price_eur,
+                ],
             ];
         });
     }

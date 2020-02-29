@@ -25,7 +25,7 @@ $factory->define(App\Models\Category::class, function (Faker\Generator $faker) {
 });
 $factory->define(App\Models\Image::class, function (Faker\Generator $faker) {
     return [
-        'src' => '/img/'. random_int(1,10).'.jpg',
+        'src' => '/img/'. random_int(1, 10).'.jpg',
     ];
 });
 
@@ -394,11 +394,13 @@ $dict =[
     'corn',
 ];
 
-
 $factory->define(App\Models\Product::class, function (Faker\Generator $faker) use($dict) {
+    $price = $faker->randomFloat(2, 4, 25);
     return [
         'name' => 'Pizza ' . ucfirst($dict[array_rand($dict)]),
         'description' => 'Pizza ' . $faker->safeColorName,
+        'price_usd' => $price,
+        'price_eur' => $price + 0.10,
         'category_id' => function () {
             return factory(\App\Models\Category::class)->create()->id;
         },

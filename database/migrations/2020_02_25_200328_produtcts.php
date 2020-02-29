@@ -3,8 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Product;
 use App\Models\Category;
+use App\Models\Product;
 
 
 class Produtcts extends Migration
@@ -34,6 +34,9 @@ class Produtcts extends Migration
                 ->references('id')
                 ->on(\App\Models\Image::tableName())
             ;
+
+            $table->double('price_eur');
+            $table->double('price_usd');
 
             $table->timestamps();
         });

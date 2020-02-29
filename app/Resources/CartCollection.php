@@ -16,6 +16,10 @@ class CartCollection extends ResourceCollection
                 'description' => $item['description'],
                 'count' => $item['count'],
                 'image' => $item['image'],
+                'price' => [
+                    'usd' => $item['price_usd'],
+                    'eur' => $item['price_eur'],
+                ],
             ];
         });
     }
