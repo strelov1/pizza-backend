@@ -14,10 +14,9 @@ class CartService
         $this->cartRepository = $cartRepository;
     }
 
-    public function addProduct(int $product_id, int $count): void
+    public function addProduct($data): void
     {
-        $cartItem = ['product_id' => $product_id, 'count' => $count];
-        $this->cartRepository->save($cartItem);
+        $this->cartRepository->save($data);
     }
 
     public function update(int $product_id, int $count): void
@@ -28,13 +27,17 @@ class CartService
 
     public function getCount(): int
     {
-        return $this->cartRepository->getCount();
+        return collect($this->cartRepository->getProducts())
+            ->reduce(function ($carry, $product) {
+                return $carry + $product['count'];
+            });
     }
 
     public function getProducts()
     {
         return $this->cartRepository->getProducts();
     }
+
     public function getProductWithCount()
     {
         $cartProducts = $this->getProducts();

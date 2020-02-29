@@ -68,9 +68,4 @@ class CartRepository
     {
         return $this->get();
     }
-
-    public function getCount(): int
-    {
-        return count($this->getProducts());
-    }
 }

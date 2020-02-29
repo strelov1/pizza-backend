@@ -25,6 +25,7 @@ $app->withFacades();
 $app->withEloquent();
 
 $app->register(\Fruitcake\Cors\CorsServiceProvider::class);
+$app->register(Urameshibr\Providers\FormRequestServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -83,11 +84,8 @@ $app->middleware([
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
-
-
 $app->configure('database');
 $app->configure('cors');
-
 
 /*
 |--------------------------------------------------------------------------

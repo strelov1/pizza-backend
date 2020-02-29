@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CatalogCollection;
 use App\Models\Product;
-use App\Resources\CatalogCollection;
 
 class CatalogController extends Controller
 {

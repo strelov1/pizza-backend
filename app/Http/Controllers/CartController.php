@@ -2,39 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use App\Resources\CartCollection;
+use App\Http\Requests\CartUpdateRequest;
+use App\Http\Resources\CartCollection;
 use App\Services\CartService;
-use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    /** @var CartService  */
+    /** @var CartService */
     protected $cartService;
 
     /**
      * CartController constructor.
-     * @param CartService $cartService
      */
     public function __construct(CartService $cartService)
     {
         $this->cartService = $cartService;
     }
 
-    public function add(Request $request)
+    /**
+     * @param CartUpdateRequest $request
+     * @return array
+     */
+    public function add(CartUpdateRequest $request)
     {
-        $productId = (int) $request->post('product_id');
-        $count = (int) $request->post('count');
-
-        $this->cartService->addProduct($productId, $count);
+        $this->cartService->addProduct($request->all());
 
         return [
             'count' => $this->cartService->getCount(),
             'products' => $this->cartService->getProducts(),
-            'product_id' => $productId
         ];
     }
 
-    public function update(Request $request)
+    /**
+     * @return array
+     */
+    public function update(CartUpdateRequest $request)
     {
         $productId = (int) $request->post('product_id');
         $count = (int) $request->post('count');
@@ -44,16 +46,21 @@ class CartController extends Controller
         return [
             'count' => $this->cartService->getCount(),
             'products' => $this->cartService->getProducts(),
-            'product_id' => $productId
+            'product_id' => $productId,
         ];
     }
 
+    /**
+     * @return CartCollection
+     */
     public function content()
     {
         return new CartCollection($this->cartService->getProductWithCount());
     }
 
-
+    /**
+     * @return array
+     */
     public function count()
     {
         return ['count' => $this->cartService->getCount()];
