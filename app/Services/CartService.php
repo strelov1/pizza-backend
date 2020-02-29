@@ -25,12 +25,13 @@ class CartService
         $this->cartRepository->update($cartItem);
     }
 
-    public function getCount(): int
+    public function getCount()
     {
         return collect($this->cartRepository->getProducts())
             ->reduce(function ($carry, $product) {
                 return $carry + $product['count'];
-            });
+            })
+        ;
     }
 
     public function getProducts()

@@ -20,18 +20,35 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
         'catalog', ['uses' => 'CatalogController@index']
     );
 
-    $router->post(
-        'cart/add', ['uses' => 'CartController@add']
-    );
+    // Cart
+    $router->group(['prefix' => 'cart'], function () use ($router) {
+        $router->post(
+            'add', ['uses' => 'CartController@add']
+        );
+        $router->post(
+            'update', ['uses' => 'CartController@update']
+        );
+        $router->get(
+            'count', ['uses' => 'CartController@count']
+        );
+        $router->get(
+            'content', ['uses' => 'CartController@content']
+        );
+    });
 
-    $router->post(
-        'cart/update', ['uses' => 'CartController@update']
-    );
+    // Order
+    $router->group(['prefix' => 'order'], function () use ($router) {
+        $router->get(
+            'create', ['uses' => 'OrderController@create']
+        );
+    });
 
-    $router->get(
-        'cart/count', ['uses' => 'CartController@count']
-    );
-    $router->get(
-        'cart/content', ['uses' => 'CartController@content']
-    );
+    // Token
+    $router->group(['prefix' => 'token'], function () use ($router) {
+        $router->post(
+            'issue', ['uses' => 'TokenController@issue']
+        );
+    });
+
+
 });

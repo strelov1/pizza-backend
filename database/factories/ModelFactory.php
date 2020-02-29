@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Support\Str;
+
 $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
@@ -26,6 +28,12 @@ $factory->define(App\Models\Category::class, function (Faker\Generator $faker) {
 $factory->define(App\Models\Image::class, function (Faker\Generator $faker) {
     return [
         'src' => '/img/'.random_int(1, 10).'.jpg',
+    ];
+});
+
+$factory->define(App\Models\Token::class, function (Faker\Generator $faker) {
+    return [
+        'token' => Str::random(32),
     ];
 });
 

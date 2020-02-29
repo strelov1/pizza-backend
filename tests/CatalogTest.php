@@ -10,8 +10,8 @@ class CatalogTest extends TestCase
     {
         $this->get('/api/v1/catalog');
 
-        $this->assertEquals(
-            1,
+        $this->assertStringContainsString(
+            'data',
             $this->response->getContent()
         );
     }

@@ -9,19 +9,6 @@ class CartRepository
 {
     protected $storage_key = 'product';
 
-    protected function put(Collection $collection)
-    {
-        return Cache::put($this->storage_key, $collection->toJson(), 3200);
-    }
-
-    protected function get()
-    {
-        if (Cache::has($this->storage_key)) {
-            return json_decode(Cache::get($this->storage_key), true);
-        }
-        return [];
-    }
-
     public function save($cartItem): void
     {
         $products = $this->getProducts();
@@ -33,6 +20,7 @@ class CartRepository
                 if ($product['product_id'] === $cartItem['product_id']) {
                     $product['count'] += $cartItem['count'];
                 }
+
                 return $product;
             });
         } else {
@@ -53,12 +41,13 @@ class CartRepository
                 if ($product['product_id'] === $cartItem['product_id']) {
                     $product['count'] = $cartItem['count'];
                 }
+
                 return $product;
             });
         }
 
         $collection = $collection->filter(function ($product) {
-            return $product['count'] !== 0;
+            return 0 !== $product['count'];
         });
 
         $this->put($collection);
@@ -67,5 +56,19 @@ class CartRepository
     public function getProducts()
     {
         return $this->get();
+    }
+
+    protected function put(Collection $collection)
+    {
+        Cache::put($this->storage_key, $collection->toJson(), 320);
+    }
+
+    protected function get()
+    {
+        if (Cache::has($this->storage_key)) {
+            return json_decode(Cache::get($this->storage_key), true);
+        }
+
+        return [];
     }
 }

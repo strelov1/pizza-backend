@@ -24,7 +24,7 @@ $app = new Laravel\Lumen\Application(
 $app->withFacades();
 $app->withEloquent();
 
-$app->register(\Fruitcake\Cors\CorsServiceProvider::class);
+$app->register(Fruitcake\Cors\CorsServiceProvider::class);
 $app->register(Urameshibr\Providers\FormRequestServiceProvider::class);
 
 /*

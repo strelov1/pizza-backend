@@ -19,9 +19,9 @@ class OrderProducts extends Migration
         Schema::create(OrderProduct::tableName(), function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('order_id')->unsigned();
 
-            $table->foreign('user_id')
+            $table->foreign('order_id')
                 ->references('id')
                 ->on(Order::tableName())
             ;
@@ -33,7 +33,7 @@ class OrderProducts extends Migration
                 ->on(Product::tableName())
             ;
 
-            $table->timestamps();
+            $table->smallInteger('count')->unsigned();
         });
     }
 
@@ -44,6 +44,6 @@ class OrderProducts extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists(OrderProduct::tableName());
     }
 }
