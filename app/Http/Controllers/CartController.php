@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Resources\CartCollection;
 use App\Services\CartService;
 use Illuminate\Http\Request;
 
@@ -49,7 +50,7 @@ class CartController extends Controller
 
     public function content()
     {
-        return $this->cartService->getProductWithCount();
+        return new CartCollection($this->cartService->getProductWithCount());
     }
 
 

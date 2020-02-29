@@ -39,15 +39,15 @@ class CartService
     {
         $cartProducts = $this->getProducts();
         $productIdx = collect($cartProducts)->pluck('product_id');
-        $products = Product::find($productIdx);
-
+        $products = Product::whereIn('id', $productIdx)->get();
 
         $result = [];
-        foreach ($products->toArray() as $product) {
+        foreach ($products as $product) {
             foreach ($cartProducts as $cartProduct) {
-                if ($product['id'] === $cartProduct['product_id']) {
-                    $result[] = array_merge($product, [
-                        'count' => $cartProduct['count']
+                if ($product->id === $cartProduct['product_id']) {
+                    $result[] = array_merge($product->toArray(), [
+                        'count' => $cartProduct['count'],
+                        'image' => $product->image->src,
                     ]);
                 }
             }
