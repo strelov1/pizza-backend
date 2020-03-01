@@ -5,7 +5,7 @@ use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class TokenTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseTransactions;
 
     /**
      * A basic test example.

@@ -56,6 +56,6 @@ class OrderService
         // Clean card
         $this->cartService->clean();
 
-        return ['status' => 1];
+        return ['status' => 1, 'order_id' => $order->id];
     }
 }

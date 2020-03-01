@@ -9,13 +9,14 @@ class CreateOrderRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'phone_number' => 'required|string',
+            'phone' => 'required|string',
             'street' => 'required|string',
             'house' => 'string',
             'flat' => 'string',
             'flour' => 'string',
             'delivery_time' => 'required|string',
             'payment_way' => 'required|string',
+            'comment' => 'string',
         ];
     }
 }
