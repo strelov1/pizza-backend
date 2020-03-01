@@ -13,7 +13,7 @@ class ProductSeeder extends Seeder
         for ($i = 0; $i < 4; ++$i) {
             $category = factory(\App\Models\Category::class)->create();
 
-            factory(Product::class, 10)->create([
+            factory(Product::class, 5)->create([
                 'category_id' => $category->id,
             ]);
         }
