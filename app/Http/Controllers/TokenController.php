@@ -14,7 +14,7 @@ class TokenController extends Controller
         $this->tokenService = $tokenService;
     }
 
-    public function issue()
+    public function issue(): TokenResponse
     {
         return new TokenResponse($this->tokenService->issue());
     }

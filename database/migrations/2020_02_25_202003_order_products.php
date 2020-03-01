@@ -34,6 +34,9 @@ class OrderProducts extends Migration
             ;
 
             $table->smallInteger('count')->unsigned();
+
+            $table->double('price_eur');
+            $table->double('price_usd');
         });
     }
 

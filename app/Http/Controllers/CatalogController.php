@@ -14,7 +14,7 @@ class CatalogController extends Controller
         $this->productRepository = $productRepository;
     }
 
-    public function index()
+    public function index(): CatalogCollection
     {
         return new CatalogCollection($this->productRepository->all());
     }

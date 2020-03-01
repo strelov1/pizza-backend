@@ -47,6 +47,14 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
             'create',
             ['uses' => 'OrderController@create']
         );
+        $router->get(
+            'last',
+            ['uses' => 'OrderController@last']
+        );
+        $router->get(
+            'history',
+            ['uses' => 'OrderController@history']
+        );
     });
 
     // Token
