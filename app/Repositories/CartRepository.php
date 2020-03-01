@@ -5,13 +5,16 @@ namespace App\Repositories;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * Class CartRepository.
+ */
 class CartRepository
 {
     protected $storage_key = 'product';
 
     public function save($cartItem): void
     {
-        $products = $this->getProducts();
+        $products = $this->getProducts($cartItem['token']);
 
         $collection = collect($products);
 
@@ -27,12 +30,12 @@ class CartRepository
             $collection = $collection->merge([$cartItem]);
         }
 
-        $this->put($collection);
+        $this->put($collection, $cartItem['token']);
     }
 
     public function update($cartItem): void
     {
-        $products = $this->getProducts();
+        $products = $this->getProducts($cartItem['token']);
 
         $collection = collect($products);
 
@@ -50,23 +53,29 @@ class CartRepository
             return 0 !== $product['count'];
         });
 
-        $this->put($collection);
+        $this->put($collection, $cartItem['token']);
     }
 
-    public function getProducts()
+    public function getProducts($token)
     {
-        return $this->get();
+        return $this->get($token);
     }
 
-    protected function put(Collection $collection)
+    public function clean($token)
     {
-        Cache::put($this->storage_key, $collection->toJson(), 320);
+         Cache::forget($this->storage_key.$token);
     }
 
-    protected function get()
+    private function put(Collection $collection, $token)
     {
-        if (Cache::has($this->storage_key)) {
-            return json_decode(Cache::get($this->storage_key), true);
+        Cache::put($this->storage_key.$token, $collection->toJson(), 7200);
+    }
+
+    private function get($token)
+    {
+        $key = $this->storage_key.$token;
+        if (Cache::has($key)) {
+            return json_decode(Cache::get($key), true);
         }
 
         return [];

@@ -2,48 +2,87 @@
 
 namespace App\Services;
 
-use App\Models\Product;
 use App\Repositories\CartRepository;
+use App\Repositories\ProductRepository;
+use Illuminate\Http\Request;
 
+/**
+ * Class CartService.
+ */
 class CartService
 {
     protected $cartRepository;
+    protected $productRepository;
+    protected $token;
 
-    public function __construct(CartRepository $cartRepository)
-    {
+    /**
+     * CartService constructor.
+     *
+     * @throws \Exception
+     */
+    public function __construct(
+        Request $request,
+        CartRepository $cartRepository,
+        ProductRepository $productRepository
+    ) {
+        if (!$request['token']) {
+            throw new \Exception('No token in Request');
+        }
+
+        $this->token = $request['token'];
         $this->cartRepository = $cartRepository;
+        $this->productRepository = $productRepository;
     }
 
+    /**
+     * @param $data
+     */
     public function addProduct($data): void
     {
         $this->cartRepository->save($data);
     }
 
-    public function update(int $product_id, int $count): void
+    /**
+     * @param $data
+     */
+    public function update($data): void
     {
-        $cartItem = ['product_id' => $product_id, 'count' => $count];
-        $this->cartRepository->update($cartItem);
+        $this->cartRepository->update($data);
     }
 
-    public function getCount()
+    /**
+     * @return int
+     */
+    public function getCount(): int
     {
-        return collect($this->cartRepository->getProducts())
+        $count = collect($this->cartRepository->getProducts($this->token))
             ->reduce(function ($carry, $product) {
                 return $carry + $product['count'];
             })
         ;
+        return $count ?? 0;
     }
 
-    public function getProducts()
+    /**
+     * @return array
+     */
+    public function getProducts(): array
     {
-        return $this->cartRepository->getProducts();
+        return $this->cartRepository->getProducts($this->token);
     }
 
-    public function getProductWithCount()
+    /**
+     * @return array
+     */
+    public function getCartBindProduct(): array
     {
         $cartProducts = $this->getProducts();
+        if (! $cartProducts) {
+            return [];
+        }
+
         $productIdx = collect($cartProducts)->pluck('product_id');
-        $products = Product::whereIn('id', $productIdx)->get();
+        $products = $this->productRepository->findBy('id', $productIdx)->all();
 
         $result = [];
         foreach ($products as $product) {
@@ -58,5 +97,13 @@ class CartService
         }
 
         return $result;
+    }
+
+    /**
+     * Clean cart
+     */
+    public function clean()
+    {
+       $this->cartRepository->clean($this->token);
     }
 }

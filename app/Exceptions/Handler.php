@@ -17,6 +17,7 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
+        Exception::class,
         AuthorizationException::class,
         HttpException::class,
         ModelNotFoundException::class,
@@ -27,9 +28,6 @@ class Handler extends ExceptionHandler
      * Report or log an exception.
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
-     *
-     * @param  \Exception  $exception
-     * @return void
      */
     public function report(Exception $exception)
     {
@@ -39,12 +37,19 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
-     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+        $code = (0 === $exception->getCode()) ? 500 : $exception->getCode();
+
+        return response()->json([
+            'error' => [
+                'code' => $code,
+                'message' => $exception->getMessage(),
+            ],
+        ], 500);
     }
 }

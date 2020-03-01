@@ -25,6 +25,14 @@ class Orders extends Migration
                 ->on(User::tableName())
             ;
 
+            $table->string('street');
+            $table->string('house')->nullable();
+            $table->string('flat')->nullable();
+            $table->string('flour')->nullable();
+            $table->string('delivery_time')->nullable();
+            $table->string('payment_way');
+
+
             $table->timestamps();
         });
     }

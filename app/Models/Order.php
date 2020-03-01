@@ -2,15 +2,20 @@
 
 namespace App\Models;
 
-use App\Contract\ProductContainable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Order extends Model implements ProductContainable
+class Order extends Model
 {
     protected $fillable = [
         'user_id',
+        'street',
+        'house',
+        'flat',
+        'flour',
+        'delivery_time',
+        'payment_way',
     ];
 
     public function user(): BelongsTo
@@ -20,7 +25,12 @@ class Order extends Model implements ProductContainable
 
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(\App\Models\Product::class, 'order_products', 'order_id', 'product_id');
+        return $this->belongsToMany(
+            \App\Models\Product::class,
+            'order_products',
+            'order_id',
+            'product_id'
+        );
     }
 
     public function orderProducts(): HasMany

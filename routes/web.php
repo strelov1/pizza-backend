@@ -17,38 +17,43 @@ $router->get('/', function () use ($router) {
 
 $router->group(['prefix' => 'api/v1'], function () use ($router) {
     $router->get(
-        'catalog', ['uses' => 'CatalogController@index']
+        'catalog',
+        ['uses' => 'CatalogController@index']
     );
 
     // Cart
-    $router->group(['prefix' => 'cart'], function () use ($router) {
+    $router->group(['prefix' => 'cart', 'middleware' => 'token'], function () use ($router) {
         $router->post(
-            'add', ['uses' => 'CartController@add']
+            'add',
+            ['uses' => 'CartController@add']
         );
         $router->post(
-            'update', ['uses' => 'CartController@update']
+            'update',
+            ['uses' => 'CartController@update']
         );
         $router->get(
-            'count', ['uses' => 'CartController@count']
+            'count',
+            ['uses' => 'CartController@count']
         );
         $router->get(
-            'content', ['uses' => 'CartController@content']
+            'content',
+            ['uses' => 'CartController@content']
         );
     });
 
     // Order
-    $router->group(['prefix' => 'order'], function () use ($router) {
-        $router->get(
-            'create', ['uses' => 'OrderController@create']
+    $router->group(['prefix' => 'order', 'middleware' => 'token'], function () use ($router) {
+        $router->post(
+            'create',
+            ['uses' => 'OrderController@create']
         );
     });
 
     // Token
     $router->group(['prefix' => 'token'], function () use ($router) {
         $router->post(
-            'issue', ['uses' => 'TokenController@issue']
+            'issue',
+            ['uses' => 'TokenController@issue']
         );
     });
-
-
 });

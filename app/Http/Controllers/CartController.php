@@ -20,16 +20,17 @@ class CartController extends Controller
     }
 
     /**
-     * @param CartUpdateRequest $request
      * @return array
      */
     public function add(CartUpdateRequest $request)
     {
-        $this->cartService->addProduct($request->all());
+        $service = $this->cartService;
+
+        $service->addProduct($request->all());
 
         return [
-            'count' => $this->cartService->getCount(),
-            'products' => $this->cartService->getProducts(),
+            'count' => $service->getCount(),
+            'products' => $service->getProducts(),
         ];
     }
 
@@ -38,24 +39,19 @@ class CartController extends Controller
      */
     public function update(CartUpdateRequest $request)
     {
-        $productId = (int) $request->post('product_id');
-        $count = (int) $request->post('count');
+        $service = $this->cartService;
 
-        $this->cartService->update($productId, $count);
+        $service->update($request->all());
 
         return [
             'count' => $this->cartService->getCount(),
             'products' => $this->cartService->getProducts(),
-            'product_id' => $productId,
         ];
     }
 
-    /**
-     * @return CartCollection
-     */
-    public function content()
+    public function content(): CartCollection
     {
-        return new CartCollection($this->cartService->getProductWithCount());
+        return new CartCollection($this->cartService->getCartBindProduct());
     }
 
     /**

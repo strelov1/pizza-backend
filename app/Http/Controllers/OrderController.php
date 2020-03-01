@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\CartService;
+use App\Http\Requests\CreateOrderRequest;
+use App\Http\Resources\StatusResponse;
 use App\Services\OrderService;
-use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
@@ -15,8 +15,8 @@ class OrderController extends Controller
         $this->orderService = $orderService;
     }
 
-    public function create()
+    public function create(CreateOrderRequest $request)
     {
-        $this->orderService->save([]);
+        return new StatusResponse($this->orderService->create($request->all()));
     }
 }
