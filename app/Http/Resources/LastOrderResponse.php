@@ -12,13 +12,13 @@ class LastOrderResponse extends JsonResource
         return [
             'status' => 1,
             'data' => [
-                'name' => $this['name'],
-                'phone' => $this['phone'],
-                'street' => $this['street'],
-                'house' => $this['house'],
-                'flat' => $this['flat'],
-                'flour' => $this['flour'],
-                'payment_way' => $this['payment_way'],
+                'name' => $this['name'] ?? null,
+                'phone' => $this['phone'] ?? null,
+                'street' => $this['street'] ?? null,
+                'house' => $this['house'] ?? null,
+                'flat' => $this['flat'] ?? null,
+                'flour' => $this['flour'] ?? null,
+                'payment_way' => $this['payment_way'] ?? null,
             ]
         ];
     }
