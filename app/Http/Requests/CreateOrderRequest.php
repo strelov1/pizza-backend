@@ -11,7 +11,6 @@ class CreateOrderRequest extends FormRequest
             'name' => 'required|string',
             'phone' => 'required|string',
             'street' => 'required|string',
-            'house' => 'string',
             'flat' => 'string',
             'flour' => 'string',
             'delivery_time' => 'required|string',
