@@ -90,7 +90,12 @@ class OrderService
      */
     public function lastOrderData(): array
     {
-        $user = $this->user();
+        try {
+            $user = $this->user();
+        } catch (\Exception $e) {
+            return [];
+        }
+
         $lastOrder = $this->orderRepository->findBy('user_id', $user->id);
 
         if ($lastOrder) {
